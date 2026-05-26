@@ -12,6 +12,11 @@ import CourseCatalog from './pages/CourseCatalog'
 import CourseDetail from './pages/CourseDetail'
 import PricingPage from './pages/PricingPage'
 import CheckoutPage from './pages/CheckoutPage'
+import AboutPage from './pages/AboutPage'
+import BlogPage from './pages/BlogPage'
+import BlogDetailPage from './pages/BlogDetailPage'
+import ContactPage from './pages/ContactPage'
+import FAQPage from './pages/FAQPage'
 
 // Auth Pages
 import LoginPage from './pages/auth/LoginPage'
@@ -28,12 +33,17 @@ import QuizPage from './pages/student/QuizPage'
 import LeaderboardPage from './pages/student/LeaderboardPage'
 import ProfilePage from './pages/student/ProfilePage'
 import NotificationsPage from './pages/student/NotificationsPage'
+import CertificatesPage from './pages/student/CertificatesPage'
+import SettingsPage from './pages/student/SettingsPage'
+import RoadmapPage from './pages/student/RoadmapPage'
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminStudents from './pages/admin/AdminStudents'
 import AdminCourses from './pages/admin/AdminCourses'
 import AdminPlans from './pages/admin/AdminPlans'
+import AdminAnalytics from './pages/admin/AdminAnalytics'
+import AdminContent from './pages/admin/AdminContent'
 
 export default function App() {
   return (
@@ -47,9 +57,14 @@ export default function App() {
             <Route path="/courses/:slug" element={<CourseDetail />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogDetailPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/faq" element={<FAQPage />} />
           </Route>
 
-          {/* Auth (no footer/nav wrapper — just plain layout) */}
+          {/* Auth */}
           <Route element={<PublicLayout />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
@@ -64,12 +79,15 @@ export default function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/ai" element={<AIPage />} />
+            <Route path="/certificates" element={<CertificatesPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/roadmap" element={<RoadmapPage />} />
             <Route path="/courses/:slug/lessons/:lessonId" element={<LessonViewer />} />
             <Route path="/courses/:slug/quiz/:quizId" element={<QuizPage />} />
             <Route path="/courses/:slug/quiz" element={<QuizPage />} />
           </Route>
 
-          {/* IDE — full screen, own layout */}
+          {/* IDE — full screen */}
           <Route path="/courses/:slug/lessons/:lessonId/ide" element={<IDEPageWrapper />} />
 
           {/* Admin */}
@@ -77,8 +95,9 @@ export default function App() {
             <Route index element={<AdminDashboard />} />
             <Route path="students" element={<AdminStudents />} />
             <Route path="courses" element={<AdminCourses />} />
-            <Route path="analytics" element={<AdminDashboard />} />
+            <Route path="analytics" element={<AdminAnalytics />} />
             <Route path="plans" element={<AdminPlans />} />
+            <Route path="content" element={<AdminContent />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

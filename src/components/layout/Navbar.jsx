@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { Menu, X, Bell, ChevronDown, LogOut, User, Settings, LayoutDashboard, Zap } from 'lucide-react'
+import { Menu, X, Bell, ChevronDown, LogOut, User, Settings, LayoutDashboard, Zap, Award, Map } from 'lucide-react'
 import { Button } from '../ui/Button'
 import { Avatar } from '../ui/Avatar'
 import { useAuth } from '../../hooks/useAuth'
@@ -92,6 +92,9 @@ export function Navbar() {
                       {[
                         { icon: <LayoutDashboard size={14} />, label: 'Dashboard', to: '/dashboard' },
                         { icon: <User size={14} />, label: 'Profile', to: '/profile' },
+                        { icon: <Settings size={14} />, label: 'Settings', to: '/settings' },
+                        { icon: <Award size={14} />, label: 'Certificates', to: '/certificates' },
+                        { icon: <Map size={14} />, label: 'Roadmap', to: '/roadmap' },
                         ...(user.role === 'admin' ? [{ icon: <Settings size={14} />, label: 'Admin Panel', to: '/admin' }] : []),
                       ].map(item => (
                         <Link

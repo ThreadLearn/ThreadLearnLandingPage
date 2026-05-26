@@ -7,6 +7,7 @@ const links = {
     { label: 'Pricing', to: '/pricing' },
     { label: 'Leaderboard', to: '/leaderboard' },
     { label: 'AI Analysis', to: '/ai' },
+    { label: 'Roadmap', to: '/roadmap' },
   ],
   Learn: [
     { label: 'Concurrency Basics', to: '/courses/intro-concurrent-programming' },
@@ -15,10 +16,10 @@ const links = {
     { label: 'Worker Threads', to: '/courses/worker-threads-nodejs' },
   ],
   Company: [
-    { label: 'About', to: '#' },
-    { label: 'Blog', to: '#' },
-    { label: 'Careers', to: '#' },
-    { label: 'Contact', to: '#' },
+    { label: 'About', to: '/about' },
+    { label: 'Blog', to: '/blog' },
+    { label: 'Contact', to: '/contact' },
+    { label: 'FAQ', to: '/faq' },
   ],
   Legal: [
     { label: 'Privacy Policy', to: '#' },

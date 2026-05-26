@@ -1,5 +1,5 @@
 import { Outlet, Navigate, NavLink, Link } from 'react-router-dom'
-import { LayoutDashboard, Users, BookOpen, BarChart2, CreditCard, LogOut, Menu, X } from 'lucide-react'
+import { LayoutDashboard, Users, BookOpen, BarChart2, CreditCard, LogOut, Menu, X, FileText } from 'lucide-react'
 import { useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { Avatar } from '../components/ui/Avatar'
@@ -8,6 +8,7 @@ const adminNav = [
   { icon: <LayoutDashboard size={16} />, label: 'Dashboard', to: '/admin' },
   { icon: <Users size={16} />, label: 'Students', to: '/admin/students' },
   { icon: <BookOpen size={16} />, label: 'Courses', to: '/admin/courses' },
+  { icon: <FileText size={16} />, label: 'Content', to: '/admin/content' },
   { icon: <BarChart2 size={16} />, label: 'Analytics', to: '/admin/analytics' },
   { icon: <CreditCard size={16} />, label: 'Plans', to: '/admin/plans' },
 ]
