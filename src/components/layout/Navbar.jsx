@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Menu, X, Bell, ChevronDown, LogOut, User, Settings, LayoutDashboard, Zap, Award, Map, BookOpen, Trophy, DollarSign, Info, Newspaper, HelpCircle, Mail } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '../ui/Button'
 import { Avatar } from '../ui/Avatar'
 import { useAuth } from '../../hooks/useAuth'
@@ -59,7 +60,12 @@ export function Navbar() {
   const unreadCount = mockNotifications.filter(n => !n.isRead).length
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-hairline">
+    <motion.header
+      initial={{ y: -64, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      className="sticky top-0 z-40 bg-white border-b border-hairline"
+    >
       <div className="max-w-content mx-auto px-6 h-14 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 font-bold text-lg tracking-tight">
@@ -184,8 +190,15 @@ export function Navbar() {
       </div>
 
       {/* Mobile Menu */}
+      <AnimatePresence>
       {menuOpen && (
-        <div className="md:hidden border-t border-hairline bg-white px-4 py-3 flex flex-col gap-1">
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: 'auto', opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.25, ease: 'easeInOut' }}
+          className="md:hidden border-t border-hairline bg-white px-4 py-3 flex flex-col gap-1 overflow-hidden"
+        >
           {[...navLinks, ...moreLinks].map(l => (
             <NavLink
               key={l.to}
@@ -205,8 +218,9 @@ export function Navbar() {
               <Button variant="primary" size="sm" className="flex-1" onClick={() => { navigate('/register'); setMenuOpen(false) }}>Sign up</Button>
             </div>
           )}
-        </div>
+        </motion.div>
       )}
-    </header>
+      </AnimatePresence>
+    </motion.header>
   )
 }

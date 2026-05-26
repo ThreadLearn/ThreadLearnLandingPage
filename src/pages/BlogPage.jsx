@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { ArrowRight, Clock, Tag, Search } from 'lucide-react'
 import { Badge } from '../components/ui/Badge'
+import { AnimatedSection, AnimatedGroup, AnimatedItem, PageWrapper } from '../components/ui/AnimatedSection'
+import { fadeInDown, scaleIn, hoverLift, tapScale } from '../lib/animations'
 
 export const mockPosts = [
   {
@@ -107,95 +110,107 @@ export default function BlogPage() {
   const rest = filtered.filter(p => !p.featured || search || activeTag !== 'All')
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <section className="border-b border-hairline py-16 px-6">
-        <div className="max-w-content mx-auto">
-          <div className="font-caption text-xs text-ink/40 mb-3">BLOG</div>
-          <h1 className="text-headline font-bold mb-4">Concurrency, explained.</h1>
-          <p className="text-body-sm text-ink/60 max-w-xl mb-8">In-depth articles on concurrent programming, JavaScript internals, and AI-assisted debugging — written by the ThreadLearn team.</p>
+    <PageWrapper>
+      <div className="min-h-screen">
+        {/* Header */}
+        <section className="border-b border-hairline py-16 px-6">
+          <AnimatedSection className="max-w-content mx-auto" variants={fadeInDown}>
+            <div className="font-caption text-xs text-ink/40 mb-3">BLOG</div>
+            <h1 className="text-headline font-bold mb-4">Concurrency, explained.</h1>
+            <p className="text-body-sm text-ink/60 max-w-xl mb-8">In-depth articles on concurrent programming, JavaScript internals, and AI-assisted debugging — written by the ThreadLearn team.</p>
 
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-1 max-w-sm">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink/40" />
-              <input
-                type="text"
-                placeholder="Search articles..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                className="w-full pl-9 pr-4 py-2.5 rounded-pill border border-hairline text-sm bg-white focus:outline-none focus:ring-2 focus:ring-black/20"
-              />
-            </div>
-            <div className="flex gap-1.5 flex-wrap">
-              {tags.map(tag => (
-                <button
-                  key={tag}
-                  onClick={() => setActiveTag(tag)}
-                  className={`px-4 py-2 rounded-pill text-xs font-medium transition-colors ${activeTag === tag ? 'bg-black text-white' : 'bg-surface-soft hover:bg-hairline text-ink/70'}`}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="max-w-content mx-auto px-6 py-12">
-        {/* Featured post */}
-        {!search && activeTag === 'All' && featured && (
-          <div className="mb-12">
-            <div className="font-caption text-xs text-ink/40 mb-4">FEATURED</div>
-            <Link to={`/blog/${featured.slug}`} className="group block">
-              <div className={`${featured.cover} rounded-xl p-10 mb-6 h-48 flex items-end`}>
-                <Badge variant="navy" className="text-white border-white/20">Featured</Badge>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="relative flex-1 max-w-sm">
+                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink/40" />
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2.5 rounded-pill border border-hairline text-sm bg-white focus:outline-none focus:ring-2 focus:ring-black/20"
+                />
               </div>
-              <div className="grid md:grid-cols-2 gap-6 items-center">
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <Badge variant={featured.tagVariant}>{featured.tag}</Badge>
-                    <span className="font-caption text-xs text-ink/40 flex items-center gap-1"><Clock size={11} />{featured.readTime}</span>
-                  </div>
-                  <h2 className="text-card-title font-bold group-hover:underline mb-3">{featured.title}</h2>
-                  <p className="text-sm text-ink/60 leading-relaxed">{featured.excerpt}</p>
+              <div className="flex gap-1.5 flex-wrap">
+                {tags.map(tag => (
+                  <motion.button
+                    key={tag}
+                    onClick={() => setActiveTag(tag)}
+                    whileTap={tapScale.tap}
+                    className={`px-4 py-2 rounded-pill text-xs font-medium transition-colors ${activeTag === tag ? 'bg-black text-white' : 'bg-surface-soft hover:bg-hairline text-ink/70'}`}
+                  >
+                    {tag}
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          </AnimatedSection>
+        </section>
+
+        <div className="max-w-content mx-auto px-6 py-12">
+          {/* Featured post */}
+          {!search && activeTag === 'All' && featured && (
+            <AnimatedSection className="mb-12" variants={scaleIn}>
+              <div className="font-caption text-xs text-ink/40 mb-4">FEATURED</div>
+              <Link to={`/blog/${featured.slug}`} className="group block">
+                <div className={`${featured.cover} rounded-xl p-10 mb-6 h-48 flex items-end`}>
+                  <Badge variant="navy" className="text-white border-white/20">Featured</Badge>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className={`w-9 h-9 rounded-full ${featured.authorColor} flex items-center justify-center font-bold text-xs`}>{featured.authorAvatar}</div>
+                <div className="grid md:grid-cols-2 gap-6 items-center">
                   <div>
-                    <div className="text-sm font-medium">{featured.author}</div>
-                    <div className="font-caption text-xs text-ink/40">{featured.date}</div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Badge variant={featured.tagVariant}>{featured.tag}</Badge>
+                      <span className="font-caption text-xs text-ink/40 flex items-center gap-1"><Clock size={11} />{featured.readTime}</span>
+                    </div>
+                    <h2 className="text-card-title font-bold group-hover:underline mb-3">{featured.title}</h2>
+                    <p className="text-sm text-ink/60 leading-relaxed">{featured.excerpt}</p>
                   </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-        )}
-
-        {/* Grid */}
-        {filtered.length === 0 ? (
-          <div className="text-center py-20 text-ink/40 text-sm">No articles found.</div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(search || activeTag !== 'All' ? filtered : rest).map(post => (
-              <Link key={post.slug} to={`/blog/${post.slug}`} className="group border border-hairline rounded-xl overflow-hidden hover:shadow-elevation-2 transition-shadow">
-                <div className={`${post.cover} h-36`} />
-                <div className="p-5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Badge variant={post.tagVariant}>{post.tag}</Badge>
-                    <span className="font-caption text-xs text-ink/40 flex items-center gap-1"><Clock size={11} />{post.readTime}</span>
-                  </div>
-                  <h3 className="font-bold text-sm leading-snug mb-2 group-hover:underline">{post.title}</h3>
-                  <p className="text-xs text-ink/60 leading-relaxed mb-4 line-clamp-3">{post.excerpt}</p>
-                  <div className="flex items-center gap-2">
-                    <div className={`w-6 h-6 rounded-full ${post.authorColor} flex items-center justify-center font-bold text-[10px]`}>{post.authorAvatar}</div>
-                    <span className="text-xs text-ink/50">{post.author} · {post.date}</span>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-9 h-9 rounded-full ${featured.authorColor} flex items-center justify-center font-bold text-xs`}>{featured.authorAvatar}</div>
+                    <div>
+                      <div className="text-sm font-medium">{featured.author}</div>
+                      <div className="font-caption text-xs text-ink/40">{featured.date}</div>
+                    </div>
                   </div>
                 </div>
               </Link>
-            ))}
-          </div>
-        )}
+            </AnimatedSection>
+          )}
+
+          {/* Grid */}
+          {filtered.length === 0 ? (
+            <div className="text-center py-20 text-ink/40 text-sm">No articles found.</div>
+          ) : (
+            <AnimatedGroup className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" stagger={0.08}>
+              {(search || activeTag !== 'All' ? filtered : rest).map(post => (
+                <AnimatedItem key={post.slug}>
+                  <motion.div
+                    className="h-full"
+                    initial="rest"
+                    whileHover="hover"
+                    variants={hoverLift}
+                  >
+                    <Link to={`/blog/${post.slug}`} className="group border border-hairline rounded-xl overflow-hidden hover:shadow-elevation-2 transition-shadow block h-full">
+                      <div className={`${post.cover} h-36`} />
+                      <div className="p-5">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Badge variant={post.tagVariant}>{post.tag}</Badge>
+                          <span className="font-caption text-xs text-ink/40 flex items-center gap-1"><Clock size={11} />{post.readTime}</span>
+                        </div>
+                        <h3 className="font-bold text-sm leading-snug mb-2 group-hover:underline">{post.title}</h3>
+                        <p className="text-xs text-ink/60 leading-relaxed mb-4 line-clamp-3">{post.excerpt}</p>
+                        <div className="flex items-center gap-2">
+                          <div className={`w-6 h-6 rounded-full ${post.authorColor} flex items-center justify-center font-bold text-[10px]`}>{post.authorAvatar}</div>
+                          <span className="text-xs text-ink/50">{post.author} · {post.date}</span>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                </AnimatedItem>
+              ))}
+            </AnimatedGroup>
+          )}
+        </div>
       </div>
-    </div>
+    </PageWrapper>
   )
 }

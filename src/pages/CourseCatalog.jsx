@@ -1,10 +1,13 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Search, Filter, Star, Users, Clock, ChevronDown } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { mockCourses } from '../data/mockCourses'
 import { Badge } from '../components/ui/Badge'
 import { Input } from '../components/ui/Input'
 import { Button } from '../components/ui/Button'
+import { PageWrapper, AnimatedSection, AnimatedGroup, AnimatedItem } from '../components/ui/AnimatedSection'
+import { fadeInDown, fadeInLeft, fadeInUp } from '../lib/animations'
 
 const levels = ['All', 'beginner', 'intermediate', 'advanced']
 const types = ['All', 'Free', 'Premium']
@@ -13,9 +16,15 @@ const tags = ['All', 'threads', 'async', 'race-conditions', 'deadlock', 'worker-
 function CourseCard({ course }) {
   const levelColor = { beginner: 'lime', intermediate: 'coral', advanced: 'lilac' }
   return (
+    <motion.div
+      whileHover={{ y: -4, boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
+      className="rounded-lg overflow-hidden"
+    >
     <Link
       to={`/courses/${course.slug}`}
-      className="group bg-white rounded-lg border border-hairline hover:shadow-elevation-2 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden"
+      className="group bg-white rounded-lg border border-hairline hover:shadow-elevation-2 transition-all duration-200 overflow-hidden block"
     >
       <div className="aspect-video bg-surface-soft overflow-hidden">
         <img src={course.thumbnail} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
@@ -47,6 +56,7 @@ function CourseCard({ course }) {
         </div>
       </div>
     </Link>
+    </motion.div>
   )
 }
 
@@ -75,15 +85,16 @@ export default function CourseCatalog() {
   }, [search, level, type, tag, sort])
 
   return (
+    <PageWrapper>
     <div className="max-w-content mx-auto px-6 py-12">
       {/* Header */}
-      <div className="mb-10">
+      <AnimatedSection variants={fadeInDown} className="mb-10">
         <span className="font-eyebrow text-xs text-ink/40 block mb-3">Curriculum</span>
         <h1 className="text-4xl font-light mb-3" style={{ fontWeight: 340 }}>All courses</h1>
         <p className="text-base text-ink/60">
           {mockCourses.length} courses covering JavaScript concurrency from beginner to advanced
         </p>
-      </div>
+      </AnimatedSection>
 
       {/* Search + Filters */}
       <div className="flex flex-col md:flex-row gap-3 mb-6">
@@ -109,8 +120,8 @@ export default function CourseCatalog() {
       </div>
 
       {/* Filter pills */}
-      <div className="flex gap-4 mb-8 flex-wrap">
-        <div className="flex gap-1 flex-wrap">
+      <AnimatedGroup stagger={0.06} className="flex gap-4 mb-8 flex-wrap">
+        <AnimatedItem variants={fadeInLeft} className="flex gap-1 flex-wrap">
           <span className="text-xs text-ink/40 flex items-center mr-1"><Filter size={11} /> Level:</span>
           {levels.map(l => (
             <button
@@ -121,8 +132,8 @@ export default function CourseCatalog() {
               {l === 'All' ? 'All' : l.charAt(0).toUpperCase() + l.slice(1)}
             </button>
           ))}
-        </div>
-        <div className="flex gap-1 flex-wrap">
+        </AnimatedItem>
+        <AnimatedItem variants={fadeInLeft} className="flex gap-1 flex-wrap">
           <span className="text-xs text-ink/40 flex items-center mr-1">Type:</span>
           {types.map(t => (
             <button
@@ -133,8 +144,8 @@ export default function CourseCatalog() {
               {t}
             </button>
           ))}
-        </div>
-        <div className="flex gap-1 flex-wrap">
+        </AnimatedItem>
+        <AnimatedItem variants={fadeInLeft} className="flex gap-1 flex-wrap">
           <span className="text-xs text-ink/40 flex items-center mr-1">Tag:</span>
           {tags.slice(0, 6).map(t => (
             <button
@@ -145,8 +156,8 @@ export default function CourseCatalog() {
               {t === 'All' ? 'All' : `#${t}`}
             </button>
           ))}
-        </div>
-      </div>
+        </AnimatedItem>
+      </AnimatedGroup>
 
       {/* Results count */}
       <div className="text-sm text-ink/50 mb-5">
@@ -156,9 +167,13 @@ export default function CourseCatalog() {
 
       {/* Grid */}
       {filtered.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {filtered.map(c => <CourseCard key={c.id} course={c} />)}
-        </div>
+        <AnimatedGroup stagger={0.07} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {filtered.map(c => (
+            <AnimatedItem key={c.id} variants={fadeInUp}>
+              <CourseCard course={c} />
+            </AnimatedItem>
+          ))}
+        </AnimatedGroup>
       ) : (
         <div className="text-center py-20 bg-surface-soft rounded-lg">
           <div className="text-4xl mb-3">🔍</div>
@@ -170,5 +185,6 @@ export default function CourseCatalog() {
         </div>
       )}
     </div>
+    </PageWrapper>
   )
 }
