@@ -1,3 +1,4 @@
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight, Zap, Code2, Trophy, Brain, ChevronRight, Star, CheckCircle } from 'lucide-react'
 import { motion, useScroll, useTransform } from 'framer-motion'
@@ -116,8 +117,6 @@ function TypedText({ words }) {
     </span>
   )
 }
-
-import React from 'react'
 
 export default function LandingPage() {
   const navigate = useNavigate()
