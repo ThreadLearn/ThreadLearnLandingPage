@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #ffffff;
+    color: #000000;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  #root {
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .font-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.54px;
+    text-transform: uppercase;
+  }
+  .font-caption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.60px;
+    text-transform: uppercase;
+  }
+  .text-display-xl {
+    font-size: clamp(40px, 6vw, 86px);
+    line-height: 1.00;
+    letter-spacing: -1.72px;
+    font-weight: 340;
+  }
+  .text-display-lg {
+    font-size: clamp(32px, 5vw, 64px);
+    line-height: 1.10;
+    letter-spacing: -0.96px;
+    font-weight: 340;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f7f7f5; }
+::-webkit-scrollbar-thumb { background: #e6e6e6; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #ccc; }
+
+/* Monaco editor reset */
+.monaco-editor { border-radius: 8px; overflow: hidden; }
