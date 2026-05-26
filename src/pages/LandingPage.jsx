@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight, Zap, Code2, Trophy, Brain, ChevronRight, Star, CheckCircle } from 'lucide-react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import CountUp from 'react-countup'
+import { useCountUp } from 'react-countup'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
 import { mockCourses } from '../data/mockCourses'
@@ -36,14 +36,25 @@ const testimonials = [
 
 function StatCard({ value, suffix, label, decimals = 0 }) {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.5 })
+  const countRef = React.useRef(null)
+  const { start } = useCountUp({
+    ref: countRef,
+    start: 0,
+    end: value,
+    duration: 2,
+    decimals,
+    suffix,
+    startOnMount: false,
+  })
+
+  React.useEffect(() => {
+    if (inView) start()
+  }, [inView])
+
   return (
     <motion.div ref={ref} variants={fadeInUp} className="text-center">
       <div className="text-3xl font-bold">
-        {inView ? (
-          <CountUp end={value} duration={2} decimals={decimals} suffix={suffix} />
-        ) : (
-          <span>0{suffix}</span>
-        )}
+        <span ref={countRef}>0{suffix}</span>
       </div>
       <div className="text-sm text-ink/50 mt-1">{label}</div>
     </motion.div>
