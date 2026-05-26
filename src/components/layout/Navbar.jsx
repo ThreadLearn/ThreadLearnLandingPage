@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { Menu, X, Bell, ChevronDown, LogOut, User, Settings, LayoutDashboard, Zap, Award, Map } from 'lucide-react'
+import { Menu, X, Bell, ChevronDown, LogOut, User, Settings, LayoutDashboard, Zap, Award, Map, BookOpen, Trophy, DollarSign, Info, Newspaper, HelpCircle, Mail } from 'lucide-react'
 import { Button } from '../ui/Button'
 import { Avatar } from '../ui/Avatar'
 import { useAuth } from '../../hooks/useAuth'
@@ -11,6 +11,45 @@ const navLinks = [
   { label: 'Leaderboard', to: '/leaderboard' },
   { label: 'Pricing', to: '/pricing' },
 ]
+
+const moreLinks = [
+  { icon: <Info size={14} />, label: 'About', to: '/about' },
+  { icon: <Newspaper size={14} />, label: 'Blog', to: '/blog' },
+  { icon: <HelpCircle size={14} />, label: 'FAQ', to: '/faq' },
+  { icon: <Mail size={14} />, label: 'Contact', to: '/contact' },
+]
+
+function MoreDropdown() {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(v => !v)}
+        className="flex items-center gap-1 px-3 py-1.5 rounded-pill text-sm font-medium hover:bg-surface-soft transition-colors"
+      >
+        More <ChevronDown size={13} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <>
+          <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
+          <div className="absolute left-0 top-full mt-1 w-44 bg-white border border-hairline rounded-lg shadow-elevation-2 z-20 py-1 overflow-hidden">
+            {moreLinks.map(l => (
+              <Link
+                key={l.to}
+                to={l.to}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2.5 px-4 py-2 text-sm hover:bg-surface-soft transition-colors"
+              >
+                <span className="text-ink/50">{l.icon}</span>
+                {l.label}
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
 
 export function Navbar() {
   const { user, logout } = useAuth()
@@ -43,6 +82,8 @@ export function Navbar() {
               {l.label}
             </NavLink>
           ))}
+          {/* More dropdown */}
+          <MoreDropdown />
         </nav>
 
         {/* Right Side */}
@@ -145,15 +186,16 @@ export function Navbar() {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden border-t border-hairline bg-white px-4 py-3 flex flex-col gap-1">
-          {navLinks.map(l => (
+          {[...navLinks, ...moreLinks].map(l => (
             <NavLink
               key={l.to}
               to={l.to}
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
-                `px-3 py-2 rounded-md text-sm font-medium ${isActive ? 'bg-surface-soft' : 'hover:bg-surface-soft'}`
+                `px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2 ${isActive ? 'bg-surface-soft' : 'hover:bg-surface-soft'}`
               }
             >
+              {'icon' in l && <span className="text-ink/40">{l.icon}</span>}
               {l.label}
             </NavLink>
           ))}
